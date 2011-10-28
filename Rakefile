@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "wherever"
   gem.homepage = "http://github.com/dw_henry/wherever"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Store and Retrieve positions by location}
+  gem.description = %Q{Allow Store of positions by multiple keys with teh option to mark specific points in time for use later}
   gem.email = "dw_henry@yahoo.com.au"
   gem.authors = ["David Henry"]
   # dependencies defined in Gemfile
@@ -41,12 +41,3 @@ Cucumber::Rake::Task.new(:features)
 
 task :default => :spec
 
-require 'rake/rdoctask'
-Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
-
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "wherever #{version}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end

@@ -1,0 +1,5 @@
+require 'mongoid'
+require 'wherever/wherever'
+require 'wherever/wherever/unique'
+require 'wherever/wherever/identifier'
+require 'wherever/wherever/builder'
