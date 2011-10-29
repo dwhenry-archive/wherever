@@ -1,7 +1,131 @@
-= wherever
+= WHEREVER
 
-Description goes here.
+Storage and retrieve of data for identifying keys, with advanced summary options.
 
+== Install
+
+gem install wherever
+
+== Setup
+
+Create a reference to the Gem:
+
+  Wherever.new("keys" => keys,
+               "database" => database,
+               "key_groups" => key_groups,
+               "key" => key)
+
+  keys =>       Key fields to be stored with individual records, fields my be listed here be used in key_groups below
+  database =>   Name of the Mongo DB to store the data in
+  key_groups => Field combinations to be used for grouping
+  key =>        Key for unique records in the dataset
+
+example:
+
+Store data with fields "group_one_id", "group_two_id" and "unique_id".
+Data should be grouped and stored for quick retrieval by "group_one_id" or "group_one_id" and "group_two_id".
+
+  @wherever = Wherever.new("keys" => ["group_one_id", "group_two_id"],
+                           "database" => "wherever_dev",
+                           "key_groups" => ["group_one_id", ["group_one_id", "group_two_id"]],
+                           "key" => "unique_id")
+               
+NOTE: In the previous example data could still be retrieved for grouping "group_two_id" but this would need to be calculated on the fly and would be significantly slower.
+
+The setup takes an optional block which can the be used to summarise the group data which takes the following parameters:
+  values => Hash to store the data in. (This should support summing of the data across multiple inserts)
+  data =>   Hash containing the data to be stored
+  record => MongoDB record for the unique record => useful to retrieve lookup data (see below)
+  keys =>   "key_group" that is currently being summarised.
+
+The below is the default grouping that is applied
+
+  @wherever = Wherever.new(*options) do |values, data, record, keys|
+    data.keys.each do  |key|
+      values[key] += data[key]
+    end
+  end
+
+
+== Data Insertion
+
+  @wherever.add(values, options)
+  
+  values =>     Raw data values to be stored. This should be a hash containing "version" and "key" (as defined on setup) values.
+  options =>    Relevant options relating to the data being inserted.  This should be a hash containing "unique" and "keys" values.
+      unique =>     This should be a hash containing "version" and "key" (as defined on setup) fields.
+      keys =>       This should be a hash with a value for each key defined in "keys" on setup.
+      
+== Data Retrieval
+
+  @wherever.get(options)
+  
+  options =>    Hash containing "keys" (for setup above) with desired lookup value.  
+                Data is returned as a hash the values which are stored on the record or generated via the summary block.
+
+== Data Lookup
+
+Store lookup data for the use in data summarisation block.
+
+In order to use a lookup store you first need to create it using:
+
+  @wherever.create_lookup(name, keys)
+  
+  name =>       Name of the lookup to be created.  This is used to create set_<name> and get_<name> methods for the lookup.
+  keys =>       Keys that are required to on the stored keys to correctly determine the correct lookup value
+  
+The setter method can then be used to store data:
+
+  wherever.set_<name>(lookup_version, data)
+  
+  lookup_version => This is used to allow storage of multiple sets of lookup values.
+                    * Recommend using the storage time as this must be a unique value.
+  data =>           Hash of the data to be stored.  The key should match to the "keys" fields declared above joined by "_" character.
+  
+The data can the be retrieved using the the getter method:
+
+  wherever.get_<name>(lookup_version, record)
+
+  lookup_version => This is used to allow storage of multiple sets of lookup values.
+                    * Recommend using the storage time as this must be a unique value.
+  record =>         This is a record that contains the required fields ("keys" in create above) to perform the lookup
+
+Lookups can then be used to create more sophisticated data summarisation process.
+
+example: The below is a complex summary method which is the main reason for building the whole gem (field names have been changed to protect the innocent).
+
+  Wherever.new(*options) do |values, data, record, keys|
+    value_two = wherever.get_lookup(record.lookup_key, record)
+    if keys.include?("group_one_id")
+      values["value_one"] += data["value_one"] if data
+      values["value_two"] =  value_two
+    end
+    if data
+      values["value_three"] += data["value_one"] * value_two
+    else
+      values["value_three"] = values["value_one"] * value_two
+    end
+  end
+  
+== Remaining Work
+
+* Allow marked points in time to be modified by changing the data version they represent.
+* Allow pricing data on marked data points to be modified.
+
+== Data Storage Levels
+
+=== Unique Records
+
+Data is passed in for each identifier and version.  This is then used to store each record as a diff to it's previous level.  Meaning the data at any point in time can be generated by summing all previous versions.  This data is only stored once within the system with each marked version just storing the version for each trade that was used to generated the summed date.
+
+=== Identifier Records
+
+This stores the current value of each identifier and is used when data is required to be regenerated at a summed level as a result of a change in lookup values.
+
+=== Grouped Records
+
+These are stored to allow quick and easy access to the data. 
+ 
 == Contributing to wherever
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
