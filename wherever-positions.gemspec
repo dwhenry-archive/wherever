@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{wherever-positions}
-  s.version = "0.1.1"
+  s.version = "0.1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Henry"]
@@ -52,6 +52,7 @@ Gem::Specification.new do |s|
     "spec/wherever/mark_spec.rb",
     "spec/wherever/setter_spec.rb",
     "spec/wherever/using_lookup_in_grouping_spec.rb",
+    "wherever-positions.gemspec",
     "wherever.gemspec"
   ]
   s.homepage = %q{http://github.com/dw_henry/wherever}
