@@ -1,7 +1,7 @@
 module DbStore
   class Identifier
     include Mongoid::Document
-    embedded_in :store, :class_name => 'DbStore::Store'
+    embedded_in :store, :inverse_of => :identifiers, :class_name => 'DbStore::Store'
     include DbStore::RecordMatcher
     
     field :_id, :type => Integer

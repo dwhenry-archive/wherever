@@ -2,7 +2,7 @@ module DbStore
   class Dataset
     include Mongoid::Document
     include DbStore::RecordMatcher
-    embedded_in :store, :class_name => 'DbStore::Store'
+    embedded_in :store, :inverse_of => :datasets, :class_name => 'DbStore::Store'
     field :values, :type => Hash, :default => Hash.new(0)
     
     def price
