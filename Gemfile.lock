@@ -60,7 +60,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bson_ext (>= 1.4.1)
+  bson_ext
   bundler (~> 1.0.0)
   cucumber
   database_cleaner
