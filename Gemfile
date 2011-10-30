@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 
 gem 'bson_ext'
-gem 'mongoid', '>=2.3.2'
+gem 'mongoid'
 
 group :development do
   gem "rspec", "~> 2.3.0"
@@ -11,5 +11,4 @@ group :development do
   gem "rcov", ">= 0"
   gem 'ruby-debug'
   gem 'database_cleaner'
-  
 end
