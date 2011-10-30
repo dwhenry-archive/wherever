@@ -8,7 +8,7 @@ module DbStore
   
   class Version
     include Mongoid::Document
-    embedded_in :lookup, :class_name => 'DbStore::Lookup'
+    embedded_in :lookup, :inverse_of => :versions, :class_name => 'DbStore::Lookup'
     field :name, :type => String
     field :values, :type => Hash, :default => Hash.new(0)
   end
