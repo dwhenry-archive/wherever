@@ -60,12 +60,12 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bson_ext (= 1.4.1)
+  bson_ext (>= 1.4.1)
   bundler (~> 1.0.0)
   cucumber
   database_cleaner
   jeweler (~> 1.6.4)
-  mongoid (= 2.3.2)
+  mongoid (>= 2.3.2)
   rcov
   rspec (~> 2.3.0)
   ruby-debug
