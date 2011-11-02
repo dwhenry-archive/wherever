@@ -9,14 +9,26 @@ describe "Wherever" do
     context 'when a single element key' do
       let(:store) { wherever.get_key_store("fund") }
       it 'sets the class name' do
-        store.key.should == ["fund"]
+        store.identifiers.to_s.should == "DbStore::CURRENT_FUND_IDENTIFIER"
+        store.datasets.to_s.should == "DbStore::CURRENT_FUND_DATASET"
+      end
+
+      it 'sets the table' do
+        store.identifiers.collection_name.should == "current_fund_identifier"
+        store.datasets.collection_name.should == "current_fund_dataset"
       end
     end
 
     context 'when a multiple element keys' do
       let(:store) { wherever.get_key_store("fund", "security") }
       it 'sets the class name' do
-        store.key.should == ["fund", "security"]
+        store.identifiers.to_s.should == "DbStore::CURRENT_FUND_SECURITY_IDENTIFIER"
+        store.datasets.to_s.should == "DbStore::CURRENT_FUND_SECURITY_DATASET"
+      end
+
+      it 'sets the table' do
+        store.identifiers.collection_name.should == "current_fund_security_identifier"
+        store.datasets.collection_name.should == "current_fund_security_dataset"
       end
     end
   end

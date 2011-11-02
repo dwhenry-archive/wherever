@@ -19,12 +19,12 @@ describe Wherever, 'with a custom grouping' do
     end
     
     it 'the identifier record' do
-      wherever.get_key_store("identifier").datasets.should ==
+      wherever.get_key_store("identifier").datasets.all.should ==
           [DbStore::Dataset.new("values" => {"unsettled" => -250, "settled" => 100}, "fund_id" => 2, "version" => 1, "trade_id" => 12)] 
     end
 
     it 'the grouped record' do
-      wherever.get_key_store("fund").datasets.should ==
+      wherever.get_key_store("fund").datasets.all.should ==
           [DbStore::Dataset.new("values" => {"unsettled" => -250, "settled" => 100}, "fund_id" => 2)] 
     end
   end

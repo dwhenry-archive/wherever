@@ -4,6 +4,7 @@ module DbStore
     embeds_many :versions, :class_name => 'DbStore::Version'
     field :name, :type => String
     field :keys, :type => Hash
+    field :lookups, :type => Hash, :default => {}
   end
   
   class Version

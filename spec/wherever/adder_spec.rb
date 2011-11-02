@@ -10,7 +10,7 @@ describe "Wherever" do
     context 'the unique dataset' do
       it 'inserts a record' do
         wherever.add({"settled" => 100, "unsettled" => 0}, options)
-        wherever.get_key_store("unique").datasets.should == 
+        wherever.get_key_store("unique").datasets.all.should == 
               [DbStore::Dataset.new("trade_id" => 12, "values" => {"unsettled" => 0, "settled" => 100}, "version" => 1, "fund_id" => 2)] 
       end
     end
@@ -18,7 +18,7 @@ describe "Wherever" do
     context 'the id dataset' do
       it 'inserts a record' do
         wherever.add({"settled" => 100, "unsettled" => 0}, options)
-        wherever.get_key_store("identifier").datasets.should ==
+        wherever.get_key_store("identifier").datasets.all.should ==
             [DbStore::Dataset.new("trade_id" => 12, "values" => {"unsettled" => 0, "settled" => 100}, "version" => 1, "fund_id" => 2)] 
       end
     end
@@ -27,9 +27,9 @@ describe "Wherever" do
       context 'with a single key' do
         it 'inserts a record' do
           wherever.add({"settled" => 100, "unsettled" => 0}, options)
-          wherever.get_key_store("fund").datasets.should ==
+          wherever.get_key_store("fund").datasets.all.should ==
               [DbStore::Dataset.new("values" => {"unsettled" => 0, "settled" => 100}, "fund_id" => 2)] 
-          wherever.get_key_store("fund").identifiers.should ==
+          wherever.get_key_store("fund").identifiers.all.should ==
               [DbStore::Identifier.new("trade_id" => 12, "version" => 1)] 
         end
       end
@@ -41,14 +41,14 @@ describe "Wherever" do
         it 'inserts a record for each key combination' do
           wherever.add({"settled" => 100, "unsettled" => 0}, options)
 
-          wherever.get_key_store("fund").datasets.should ==
+          wherever.get_key_store("fund").datasets.all.should ==
               [DbStore::Dataset.new("values" => {"unsettled" => 0, "settled" => 100}, "fund_id" => 2)] 
-          wherever.get_key_store("fund").identifiers.should ==
+          wherever.get_key_store("fund").identifiers.all.should ==
               [DbStore::Identifier.new("trade_id" => 12, "version" => 1)] 
 
-          wherever.get_key_store("security").datasets.should ==
+          wherever.get_key_store("security").datasets.all.should ==
               [DbStore::Dataset.new("values" => {"unsettled" => 0, "settled" => 100}, "security_id" => 4)] 
-          wherever.get_key_store("security").identifiers.should ==
+          wherever.get_key_store("security").identifiers.all.should ==
               [DbStore::Identifier.new("trade_id" => 12, "version" => 1)] 
         end
       end
@@ -61,19 +61,19 @@ describe "Wherever" do
         it 'inserts a record for each key combination' do
           wherever.add({"settled" => 100, "unsettled" => 0}, options)
 
-          wherever.get_key_store("fund").datasets.should ==
+          wherever.get_key_store("fund").datasets.all.should ==
               [DbStore::Dataset.new("values" => {"unsettled" => 0, "settled" => 100}, "fund_id" => 2)] 
-          wherever.get_key_store("fund").identifiers.should ==
+          wherever.get_key_store("fund").identifiers.all.should ==
               [DbStore::Identifier.new("trade_id" => 12, "version" => 1)] 
 
-          wherever.get_key_store("security").datasets.should ==
+          wherever.get_key_store("security").datasets.all.should ==
               [DbStore::Dataset.new("values" => {"unsettled" => 0, "settled" => 100}, "security_id" => 4)] 
-          wherever.get_key_store("security").identifiers.should ==
+          wherever.get_key_store("security").identifiers.all.should ==
               [DbStore::Identifier.new("trade_id" => 12, "version" => 1)] 
 
-          wherever.get_key_store("fund", "security").datasets.should ==
+          wherever.get_key_store("fund", "security").datasets.all.should ==
               [DbStore::Dataset.new("fund_id" => 2, "security_id" => 4, "values" => {"unsettled" => 0, "settled" => 100})] 
-          wherever.get_key_store("fund", "security").identifiers.should ==
+          wherever.get_key_store("fund", "security").identifiers.all.should ==
               [DbStore::Identifier.new("trade_id" => 12, "version" => 1)] 
         end
       end
@@ -91,7 +91,7 @@ describe "Wherever" do
       it 'add the change' do
         wherever.add({"settled" => 110, "unsettled" => 0}, options_second)
 
-        wherever.get_key_store("unique").datasets.should ==
+        wherever.get_key_store("unique").datasets.all.should ==
             [DbStore::Dataset.new("fund_id" => 2, "trade_id" => 12, "version" => 1, "values" => {"unsettled" => 0, "settled" => 100}),
              DbStore::Dataset.new("fund_id" => 2, "trade_id" => 12, "version" => 2, "values" => {"unsettled" => 0, "settled" => 10})] 
       end
@@ -101,7 +101,7 @@ describe "Wherever" do
       it 'updates the record' do
         wherever.add({"settled" => 110, "unsettled" => 0}, options_second)
 
-        wherever.get_key_store("identifier").datasets.should ==
+        wherever.get_key_store("identifier").datasets.all.should ==
             [DbStore::Dataset.new("fund_id" => 2, "trade_id" => 12, "version" => 2, "values" => {"unsettled" => 0, "settled" => 110})]
       end
     end
@@ -110,9 +110,9 @@ describe "Wherever" do
       context 'with a single key' do
         it 'inserts a record' do
           wherever.add({"settled" => 110, "unsettled" => 0}, options_second)
-          wherever.get_key_store("fund").datasets.should ==
-              [DbStore::Dataset.new("values" => {"unsettled" => 0, "settled" => 110}, "fund_id" => 2)] 
-          wherever.get_key_store("fund").identifiers.should ==
+          wherever.get_key_store("fund").datasets.all.should ==
+              [DbStore::Dataset.new("values"  => {"unsettled" => 0, "settled" => 110}, "fund_id" => 2)] 
+          wherever.get_key_store("fund").identifiers.all.should ==
               [DbStore::Identifier.new("trade_id" => 12, "version" => 2)] 
         end
       end

@@ -1,10 +1,11 @@
 module DbStore
-  class Identifier
-    include Mongoid::Document
-    embedded_in :store, :inverse_of => :identifiers, :class_name => 'DbStore::Store'
-    include DbStore::RecordMatcher
+  module IdentifierConfig
+    def self.included(base)
+      base.send :include, Mongoid::Document
+      base.send :include, DbStore::RecordMatcher
     
-    field :_id, :type => Integer
-    field :version, :type => Integer
-  end
+      base.field :_id, :type => Integer
+      base.field :version, :type => Integer
+    end
+  end    
 end

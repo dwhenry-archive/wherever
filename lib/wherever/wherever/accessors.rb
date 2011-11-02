@@ -1,8 +1,11 @@
 class Wherever
   module Accessors
     def get_key_store(*keys)
-      mark = keys.last.is_a?(Hash) ? keys.pop["marker"] : marker
-      collection(mark).stores.find_or_create_by(:key => keys)
+      DbStore.new_store(get_marker(keys), keys)
+    end
+    
+    def get_marker(keys=[])
+      keys.last.is_a?(Hash) ? keys.pop["marker"] : marker
     end
     
     def collection(mark=marker)

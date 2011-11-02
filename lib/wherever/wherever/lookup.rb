@@ -10,13 +10,13 @@ class Wherever
           lookup, record = create_lookup_record(name, version)
           record.values = key_to_string(values)
           record.save
-          recalculate if set_price_lookup(version)
+          recalculate if set_price_lookup(name, version)
         end
       end
     
       self.class.class_eval do
-        define_method "get_#{name}" do |version, data|
-          lookup, record = get_lookup_record(name, version)
+        define_method "get_#{name}" do |marker, data|
+          lookup, record = get_lookup_record(name, marker)
           value_key = lookup.keys.map{|key| data[key]}.join('_')
           record.values[value_key] || 0
         end
@@ -30,9 +30,11 @@ class Wherever
       string_values
     end
     
-    def set_price_lookup(version)
-      return false if collection.price == version
-      collection.update_attributes(:price => version)
+    def set_price_lookup(name, version=nil, keys=[])
+      lookup = get_lookup(name)
+      return false if lookup.lookups[get_marker] == version
+      lookup.lookups[get_marker(keys)] = (version || lookup.lookups['current'])
+      lookup.save
     end
     
     def recalculate
@@ -49,18 +51,22 @@ class Wherever
       end
     end
     
-    def get_lookup_record(name, version)
-      lookup = DbStore::Lookup.where(:name => name).first
-      raise InvalidLookup, "Attempt to access invalid lookup: #{name}" unless lookup
-      return [lookup, lookup.versions.find_or_create_by(:name => version)]
+    def get_lookup_record(name, marker)
+      lookup = get_lookup(name)
+      return [lookup, lookup.versions.find_or_create_by(:name => lookup.lookups[marker])]
     end
     
     def create_lookup_record(name, version)
-      lookup = DbStore::Lookup.where(:name => name).first
-      raise InvalidLookup, "Attempt to access invalid lookup: #{name}" unless lookup
+      lookup = get_lookup(name)
       records = lookup.versions.where(:name => version)
       raise InvalidLookupSetter, "Lookup '#{version}' for '#{name}' already set" unless records.empty?
       return [lookup, lookup.versions.find_or_create_by(:name => version)]
+    end
+    
+    def get_lookup(name)
+      lookup = DbStore::Lookup.where(:name => name).first
+      raise InvalidLookup, "Attempt to access invalid lookup: #{name}" unless lookup
+      lookup
     end
   end
 end

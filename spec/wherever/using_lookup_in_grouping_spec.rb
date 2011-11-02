@@ -4,7 +4,7 @@ describe Wherever, 'using lookup in grouping calculation' do
   let(:create_options) { ["keys" => keys, "database" => 'wherever_test', "key_groups" => key_groups, "key" => "trade_id"] }
   let(:wherever) { 
     Wherever.new(*create_options) do |values, data, record, keys|
-      price = wherever.get_price(record.price, record)
+      price = wherever.get_price('current', record)
       if keys.include?("security_id")
         values["position"] += data["position"] if data
         values["price"] =  price
@@ -32,25 +32,25 @@ describe Wherever, 'using lookup in grouping calculation' do
       end
       
       it 'on identifier record' do
-        wherever.get_key_store("identifier").datasets.should ==
+        wherever.get_key_store("identifier").datasets.all.should ==
             [DbStore::Dataset.new("values" => {"position" => 100, "price" => 12.5, "trade_value" => 1250}, 
                 "trade_id" => 12, "version" => 1, "fund_id" => 2, "security_id" => 4)] 
       end
       
       it 'on fund record' do
-        wherever.get_key_store("fund").datasets.should ==
+        wherever.get_key_store("fund").datasets.all.should ==
             [DbStore::Dataset.new("values" => {"trade_value" => 1250}, "fund_id" => 2)] 
       end
 
       it 'on fund record with trade edit' do
         wherever.add({"position" => 110}, options_two)
-        wherever.get_key_store("fund").datasets.should ==
+        wherever.get_key_store("fund").datasets.all.should ==
             [DbStore::Dataset.new("values" => {"trade_value" => 1375}, "fund_id" => 2)] 
       end
 
       it 'on fund record with two trades' do
         wherever.add({"position" => 200}, options_three)
-        wherever.get_key_store("fund").datasets.should ==
+        wherever.get_key_store("fund").datasets.all.should ==
             [DbStore::Dataset.new("values" => {"trade_value" => 3750}, "fund_id" => 2)] 
       end
     end
@@ -70,7 +70,7 @@ describe Wherever, 'using lookup in grouping calculation' do
       it 'on identifier record' do
         wherever.create_lookup('price', ["security_id"])
         wherever.set_price('current', {4 => 12.5})
-        wherever.get_key_store("identifier").datasets.should ==
+        wherever.get_key_store("identifier").datasets.all.should ==
             [DbStore::Dataset.new("values" => {"position" => 100, "price" => 12.5, "trade_value" => 1250}, 
                 "trade_id" => 12, "version" => 1, "fund_id" => 2, "security_id" => 4)] 
       end
@@ -78,7 +78,7 @@ describe Wherever, 'using lookup in grouping calculation' do
       it 'on fund record' do
         wherever.create_lookup('price', ["security_id"])
         wherever.set_price('current', {4 => 12.5})
-        wherever.get_key_store("fund").datasets.should ==
+        wherever.get_key_store("fund").datasets.all.should ==
             [DbStore::Dataset.new("values" => {"trade_value" => 1250}, "fund_id" => 2)] 
       end
 
@@ -86,14 +86,14 @@ describe Wherever, 'using lookup in grouping calculation' do
         wherever.add({"position" => 110}, options_two)
         wherever.create_lookup('price', ["security_id"])
         wherever.set_price('current', {4 => 12.5})
-        wherever.get_key_store("fund").datasets.should ==
+        wherever.get_key_store("fund").datasets.all.should ==
             [DbStore::Dataset.new("values" => {"trade_value" => 1375}, "fund_id" => 2)] 
       end
 
       it 'on fund record with two trades' do
         wherever.add({"position" => 200}, options_three)
         wherever.set_price('current', {4 => 12.5})
-        wherever.get_key_store("fund").datasets.should ==
+        wherever.get_key_store("fund").datasets.all.should ==
             [DbStore::Dataset.new("values" => {"trade_value" => 3750}, "fund_id" => 2)] 
       end
     end
