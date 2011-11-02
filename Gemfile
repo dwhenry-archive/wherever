@@ -1,6 +1,8 @@
 source "http://rubygems.org"
 
 gem 'bson_ext'
+#gem 'mongoid', "=2.3.2"
+#gem 'mongoid', "=1.9.5"
 gem 'mongoid'
 
 group :development do

@@ -9,6 +9,7 @@ module DbStore
     def self.included(base)
       base.send :include, Mongoid::Document
       base.send :include, DbStore::RecordMatcher
+      
       base.field :values, :type => Hash, :default => Hash.new(0)
     end
   

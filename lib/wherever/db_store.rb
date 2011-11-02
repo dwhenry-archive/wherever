@@ -21,11 +21,9 @@ module DbStore
     def get_store(marker, keys, db_type)
       name = "#{marker.upcase}_#{keys.map(&:upcase).join('_')}_#{db_type.to_s.upcase}"
       return "DbStore::#{name}".constantize if DbStore.constants.include?(name)
-      klass = Class.new do
-        include "DbStore::#{db_type.to_s.titlecase}Config".constantize
-        store_in :"#{marker}_#{keys.join('_')}_#{db_type}"
-      end
-      eval("DbStore::#{name}=klass")
+      klass = DbStore.const_set(name, Class.new)
+      klass.send :include, "DbStore::#{db_type.to_s.titlecase}Config".constantize
+      klass.send :store_in, :"#{marker}_#{keys.join('_')}_#{db_type}"
       klass
     end
     
