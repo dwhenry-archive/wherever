@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{wherever-positions}
-  s.version = "0.2.3"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Henry"]
-  s.date = %q{2011-10-30}
+  s.date = %q{2011-11-02}
   s.description = %q{Allow Store of positions by multiple keys with teh option to mark specific points in time for use later}
   s.email = %q{dw_henry@yahoo.com.au}
   s.extra_rdoc_files = [
@@ -36,9 +36,7 @@ Gem::Specification.new do |s|
     "lib/wherever/db_store/dataset.rb",
     "lib/wherever/db_store/identifier.rb",
     "lib/wherever/db_store/lookup.rb",
-    "lib/wherever/db_store/marker.rb",
     "lib/wherever/db_store/record_matcher.rb",
-    "lib/wherever/db_store/store.rb",
     "lib/wherever/wherever.rb",
     "lib/wherever/wherever/accessors.rb",
     "lib/wherever/wherever/adder.rb",
