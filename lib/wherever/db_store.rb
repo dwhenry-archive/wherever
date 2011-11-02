@@ -17,13 +17,33 @@ module DbStore
           get_store(marker, keys, :dataset)
       )
     end
+
+    def new_lookup(name, keys=nil)
+      @stores ||= {}
+      @stores[name] = get_lookup(name, keys)
+    end
     
     def get_store(marker, keys, db_type)
       name = "#{marker.upcase}_#{keys.map(&:upcase).join('_')}_#{db_type.to_s.upcase}"
       return "DbStore::#{name}".constantize if DbStore.constants.include?(name)
+      build_class(name, "DbStore::#{db_type.to_s.titlecase}Config".constantize, :"#{marker}_#{keys.join('_')}_#{db_type}")
+    end
+    
+    def get_lookup(name, keys)
+      if keys
+        DbStore::Lookup.find_or_create_by(:name => name, :keys => keys)
+      end
+      name = "Lookup_#{name.upcase}"
+      return "DbStore::#{name}".constantize if DbStore.constants.include?(name)
+      raise "Missing lookup key from definition" unless keys
+
+      build_class(name, DbStore::VersionConfig, :"lookup_#{name}")
+    end
+    
+    def build_class(name, module_object, store_in)
       klass = DbStore.const_set(name, Class.new)
-      klass.send :include, "DbStore::#{db_type.to_s.titlecase}Config".constantize
-      klass.send :store_in, :"#{marker}_#{keys.join('_')}_#{db_type}"
+      klass.send :include, module_object
+      klass.send :store_in, store_in
       klass
     end
     
