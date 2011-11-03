@@ -7,7 +7,7 @@ class Wherever
         define_method "set_#{name}" do |version, values|
           new_version?(name, version)
           lookup_class.create(:name => version, :values => key_to_string(values))
-          recalculate if set_price_lookup(name, version)
+          recalculate(name) if set_price_lookup(name, version)
         end
       end
     
@@ -36,18 +36,34 @@ class Wherever
       lookup.save
     end
     
-    def recalculate
+    def recalculate(name)
+      keys = get_lookup(name).keys
       config.key_groups.each do |group|
-        get_key_store(*group).datasets.delete_all
+        if keys & group != keys
+          get_key_store(*group).datasets.delete_all
+        end
       end
       
       identifier_set.datasets.all.each do |record|
         @grouping.call(record.values, nil, record, config.keys)
         record.save!
         config.key_groups.each do |group|
-          for_group(group, record.values, record)
+          if keys & group != keys
+            for_group(group, record.values, record)
+          end
         end
       end
+      config.key_groups.each do |group|
+        if keys & group == keys
+          get_key_store(*group).datasets.all.each do |record|
+            @grouping.call(record.values, nil, record, nil)
+          end
+          record.save!
+        end
+      end
+    end
+    
+    def temp(group_keys, values, id_record)
     end
     
     def get_lookup_record(name, marker)

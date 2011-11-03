@@ -65,7 +65,7 @@ DEPENDENCIES
   cucumber
   database_cleaner
   jeweler (~> 1.6.4)
-  mongoid
+  mongoid (= 2.3.2)
   rcov
   rspec (~> 2.3.0)
   ruby-debug
