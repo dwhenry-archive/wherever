@@ -1,15 +1,16 @@
 class Wherever
   module Mark
     def mark(name)
-      (['identifier'] + config.key_groups).each do |key|
-        keys = Array(key)
-        current_db = get_key_store(*keys)
-        new_db = get_key_store(*(keys + [{'marker' => name}]))
-        current_db.datasets.all.each do |record|
-          new_db.datasets.create!(record.attributes)
-        end
-        current_db.identifiers.all.each do |record|
-          new_db.identifiers.create!(record.attributes)
+      configuration = if Mongoid::Config.respond_to?(:master) 
+        Mongoid::Config
+      else
+        Mongoid::Config.instance
+      end
+      configuration.master.eval("db.current_identifier.find().forEach( function(x){db.#{name}_identifier.insert(x)} )")
+      config.key_groups.each do |keys|
+        [:identifier, :dataset].each do |db_type|
+          db_id = "#{keys.join('_')}_#{db_type}"
+          configuration.master.eval("db.current_#{db_id}.find().forEach( function(x){db.#{name}_#{db_id}.insert(x)} )")
         end
       end
       set_price_lookup('price', nil, [{'marker' => name}])

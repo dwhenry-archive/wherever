@@ -1,3 +1,4 @@
+require 'mongo'
 require 'mongoid'
 require 'wherever/wherever/accessors'
 require 'wherever/wherever/adder'
