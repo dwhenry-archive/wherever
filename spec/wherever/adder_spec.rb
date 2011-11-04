@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe "Wherever" do
   let(:wherever) { Wherever.new("keys" => keys, "database" => 'wherever_test', "key_groups" => key_groups, "key" => "trade_id") }
-  let(:keys) { ["fund_id"] }
+  let(:keys) { ["fund"] }
   let(:key_groups) { nil }
     
   context 'adding the first record' do
@@ -35,7 +35,7 @@ describe "Wherever" do
       end
 
       context 'with a multiple keys' do
-        let(:keys) { ["fund_id", "security_id"] }
+        let(:keys) { ["fund", "security"] }
         let(:options) { {"unique" => {"trade_id" => 12, "version" => 1}, "keys" => {"fund_id" => 2, "security_id" => 4}} }
         
         it 'inserts a record for each key combination' do
@@ -54,7 +54,7 @@ describe "Wherever" do
       end
 
       context 'with a multiple keys and grouping configured' do
-        let(:keys) { ["fund_id", "security_id"] }
+        let(:keys) { ["fund", "security"] }
         let(:key_groups) { ["fund", "security", ["fund", "security"]] }
         let(:options) { {"unique" => {"trade_id" => 12, "version" => 1}, "keys" => {"fund_id" => 2, "security_id" => 4}} }
         

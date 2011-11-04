@@ -52,8 +52,7 @@ class Wherever
     def for_group(group_keys, values, id_record)
       key = {}
       group_keys.each do |key_values|
-        k_id = "#{key_values}_id"
-        key.merge!(k_id => @options["keys"][k_id])
+        key.merge!(key_values.to_id => @options["keys"][key_values.to_id])
       end
       store = get_key_store(*group_keys)
       record = store.datasets.find_or_create_by(key)

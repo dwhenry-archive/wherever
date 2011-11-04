@@ -2,12 +2,12 @@ require 'spec_helper'
 
 describe Wherever, 'setting values' do
   let(:wherever) { Wherever.new("keys" => keys, "database" => 'wherever_test', "key_groups" => key_groups, "key" => "trade_id") }
-  let(:keys) { ["fund_id"] }
+  let(:keys) { ["fund"] }
   let(:key_groups) { nil }
   
   context 'data storage' do
     before do
-      wherever.create_lookup('price', ["security_id"])
+      wherever.create_lookup('price', ["security"])
     end
     
     it 'can save and retrieve version data' do

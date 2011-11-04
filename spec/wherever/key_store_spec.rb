@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe "Wherever" do
   let(:wherever) { Wherever.new("keys" => keys, "database" => 'wherever_test', "key_groups" => key_groups, "key" => "trade_id") }
-  let(:keys) { ["fund_id"] }
+  let(:keys) { ["fund"] }
   let(:key_groups) { nil }
     
   context 'get the key store' do

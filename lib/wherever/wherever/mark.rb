@@ -1,7 +1,7 @@
 class Wherever
   module Mark
     def mark(name)
-      copy_collections("current_identifier", "#{name}_identifier")
+      copy_collections("current_identifier_dataset", "#{name}_identifier_dataset")
       config.key_groups.each do |keys|
         [:identifier, :dataset].each do |db_type|
           db_id = "#{keys.join('_')}_#{db_type}"

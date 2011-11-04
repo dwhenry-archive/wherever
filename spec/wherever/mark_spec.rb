@@ -5,7 +5,7 @@ describe Wherever, 'mark a time point' do
   let(:wherever) { 
     Wherever.new(*create_options) do |values, data, record, keys|
       price = wherever.get_price('current', record)
-      if keys.include?("security_id")
+      if keys.include?("security")
         values["position"] += data["position"] if data
         values["price"] =  price
       end
@@ -16,14 +16,14 @@ describe Wherever, 'mark a time point' do
       end
     end
   }
-  let(:keys) { ["fund_id", "security_id"] }
+  let(:keys) { ["fund", "security"] }
   let(:key_groups) { ["fund", "security", ["fund", "security"]] }
   
   let(:options_one) { {"unique" => {"trade_id" => 12, "version" => 1}, "keys" => {"fund_id" => 2, "security_id" => 4}} }
   let(:options_two) { {"unique" => {"trade_id" => 14, "version" => 1}, "keys" => {"fund_id" => 2, "security_id" => 4}} }
 
   before do
-    wherever.create_lookup('price', ["security_id"])
+    wherever.create_lookup('price', ["security"])
     wherever.set_price('20111029_01', {4 => 12.5})
     wherever.add({"position" => 100}, options_one)
     wherever.mark('COB_20111009')

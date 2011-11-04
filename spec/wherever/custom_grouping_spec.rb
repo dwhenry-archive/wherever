@@ -10,7 +10,7 @@ describe Wherever, 'with a custom grouping' do
   }
 
   context 'add a record' do
-    let(:keys) { ["fund_id"] }
+    let(:keys) { ["fund"] }
     let(:key_groups) { nil }
     let(:options) { {"unique" => {"trade_id" => 12, "version" => 1}, "keys" => {"fund_id" => 2}} }
 
@@ -30,8 +30,8 @@ describe Wherever, 'with a custom grouping' do
   end
   
   context 'get a record' do
-    let(:keys) { ["fund_id", "security_id"] }
-    let(:key_groups) { ["fund_id"] }
+    let(:keys) { ["fund", "security"] }
+    let(:key_groups) { ["fund"] }
     let(:options_one) { {"unique" => {"trade_id" => 12, "version" => 1}, "keys" => {"fund_id" => 2, "security_id" => 14}} }
     let(:options_two) { {"unique" => {"trade_id" => 15, "version" => 1}, "keys" => {"fund_id" => 2, "security_id" => 14}} }
 

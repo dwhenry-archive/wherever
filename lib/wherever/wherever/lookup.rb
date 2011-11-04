@@ -16,7 +16,7 @@ class Wherever
           lookup = get_lookup(name)
           lookup_data = lookup_class.where(:name => lookup.lookups[marker]).first
           return 0 unless lookup_data 
-          value_key = lookup.keys.map{|key| data[key]}.join('_')
+          value_key = lookup.keys.map{|key| data[key.to_id]}.join('_')
           lookup_data.values[value_key] || 0
         end
       end
@@ -56,14 +56,11 @@ class Wherever
       config.key_groups.each do |group|
         if keys & group == keys
           get_key_store(*group).datasets.all.each do |record|
-            @grouping.call(record.values, nil, record, nil)
+            @grouping.call(record.values, nil, record, group)
+            record.save!
           end
-          record.save!
         end
       end
-    end
-    
-    def temp(group_keys, values, id_record)
     end
     
     def get_lookup_record(name, marker)

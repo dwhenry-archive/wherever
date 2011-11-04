@@ -31,9 +31,10 @@ module DbStore
     
     def get_lookup(name, keys)
       DbStore::Lookup.find_or_create_by(:name => name, :keys => keys) if keys
-      return "DbStore::Lookup#{name}".constantize if DbStore.constants.include?("Lookup#{name}")
+      class_name = "Lookup#{name.titlecase}"
+      return "DbStore::#{class_name}".constantize if DbStore.constants.include?(class_name)
       raise "Missing lookup key from definition" unless keys
-      build_class("Lookup#{name}", DbStore::VersionConfig, :"lookup_#{name}")
+      build_class(class_name, DbStore::VersionConfig, :"lookup_#{name}")
     end
     
     def build_class(name, module_object, store_in)

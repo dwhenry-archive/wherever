@@ -5,6 +5,10 @@ module DbStore
     field :keys, :type => Hash
     field :lookups, :type => Hash, :default => {}
     field :current, :type => String
+    
+    def keys
+      StringHelper.add_method_to_id(self['keys'])
+    end
   end
   
   class Version

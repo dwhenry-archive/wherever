@@ -5,7 +5,7 @@ class Wherever
       result = Hash.new(0)
       if keys.first == "identifier"
         get_key_store(*keys).datasets.where(selector).all.each do |record|
-          @grouping.call(result, record.values, result, config)
+          @grouping.call(result, record.values, result, keys)
         end
         result
       else
@@ -24,7 +24,7 @@ class Wherever
     end
     
     def check_keys(keys)
-      invalid_keys = (keys - config.keys)
+      invalid_keys = (keys - config.keys.map(&:to_id))
       raise InvalidSelector,"Unknown Selector: #{invalid_keys.join(' ')}" unless invalid_keys.empty?
     end
   end
