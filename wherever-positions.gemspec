@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{wherever-positions}
-  s.version = "0.4.3"
+  s.version = "0.4.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Henry"]
@@ -30,6 +30,7 @@ Gem::Specification.new do |s|
     "features/support/env.rb",
     "features/wherever.feature",
     "lib/monkeypatch_for_mongoid_1.9.rb",
+    "lib/string_helper.rb",
     "lib/wherever.rb",
     "lib/wherever/configure.rb",
     "lib/wherever/db_store.rb",
