@@ -7,7 +7,7 @@ module DbStore
     field :current, :type => String
     
     def keys
-      StringHelper.add_method_to_id(self['keys'])
+      @keys ||= StringHelper.add_method_to_id(read_attribute('keys'), false)
     end
   end
   

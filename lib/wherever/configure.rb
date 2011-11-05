@@ -13,8 +13,7 @@ class Configure
       config.master = mongo_connection
     end
   
-    @keys = StringHelper.add_method_to_id(options["keys"])
-    groups = StringHelper.add_method_to_id(options["key_groups"]) || @keys
-    @key_groups = groups.map{|g| Array(g)}
+    @keys = StringHelper.add_method_to_id(options["keys"], false)
+    @key_groups = StringHelper.add_method_to_id(options["key_groups"] || options["keys"])
   end
 end

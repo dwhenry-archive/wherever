@@ -5,7 +5,7 @@ require 'wherever'
 require 'ruby-debug'
 require 'database_cleaner'
 
-Wherever.new("keys" => ["fund_id"], "database" => 'wherever_test')
+Wherever.new("keys" => ["fund"], "database" => 'wherever_test')
 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.
