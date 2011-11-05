@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Henry"]
-  s.date = %q{2011-11-04}
+  s.date = %q{2011-11-05}
   s.description = %q{Allow Store of positions by multiple keys with teh option to mark specific points in time for use later}
   s.email = %q{dw_henry@yahoo.com.au}
   s.extra_rdoc_files = [
