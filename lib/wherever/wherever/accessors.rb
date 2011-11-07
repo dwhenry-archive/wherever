@@ -1,10 +1,10 @@
 class Wherever
   module Accessors
-    protected
     def get_key_store(*keys)
       DbStore.new_store(get_marker(keys), keys)
     end
     
+    protected
     def get_marker(keys=[])
       keys.last.is_a?(Hash) ? keys.pop["marker"] : marker
     end

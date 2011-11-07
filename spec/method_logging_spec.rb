@@ -8,11 +8,13 @@ describe "Wherever", 'method logging' do
   let(:file) { mock(:file_io) }
   before do
     MethodLogging.stub(:log => true)
+    Timecop.travel(Time.now)
   end
+  after { Timecop.return }
   context 'the add method' do
     
     it 'is logged to file' do
-      call_string = %Q{Called: add({"unsettled" => 0, "settled" => 100}, {"keys" => {"fund_id" => 2}, "unique" => {"trade_id" => 12, "version" => 1}})}
+      call_string = %Q{Called #{Time.now}: add({"unsettled" => 0, "settled" => 100}, {"keys" => {"fund_id" => 2}, "unique" => {"trade_id" => 12, "version" => 1}})}
       MethodLogging.should_receive(:log).with(call_string)
       wherever.add({"settled" => 100, "unsettled" => 0}, options)
     end
@@ -20,7 +22,7 @@ describe "Wherever", 'method logging' do
   
   context 'the get key method' do
     it 'is logged to file' do
-      call_string = %Q{Called: get_key_store("identifier")}
+      call_string = %Q{Called #{Time.now}: get_key_store("identifier")}
       MethodLogging.should_receive(:log).with(call_string)
       wherever.get_key_store("identifier").datasets.all
     end

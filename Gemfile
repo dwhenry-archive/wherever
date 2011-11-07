@@ -13,4 +13,5 @@ group :development do
   gem "rcov", ">= 0"
   gem 'ruby-debug'
   gem 'database_cleaner'
+  gem 'timecop'
 end

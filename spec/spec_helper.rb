@@ -4,6 +4,7 @@ require 'rspec'
 require 'wherever'
 require 'ruby-debug'
 require 'database_cleaner'
+require 'timecop'
 
 Wherever.new("keys" => ["fund"], "database" => 'wherever_test')
 

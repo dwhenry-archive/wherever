@@ -12,7 +12,7 @@ module MethodLogging
       klass.send :alias_method, :"#{method}_without_logging", method
       klass.class_eval <<-END
         def #{method}_with_logging(*args)
-          MethodLogging.log("Called: #{method}(\#{MethodLogging.strify(*args)})")
+          MethodLogging.log("Called #{Time.now}: #{method}(\#{MethodLogging.strify(*args)})")
           #{method}_without_logging(*args)
         end
       END
@@ -20,7 +20,9 @@ module MethodLogging
     end
     
     def log(string)
-      File.open("log/method.log", 'a') do |f|
+      path = Class.constants.include?('RAILS_ROOT') ? RAILS_ROOT : File.expand_path(File.dirname(__FILE__) + '/..')
+      FileUtils.mkdir_p("#{path}/log") if File.exists?("#{path}/log")
+      File.open("#{path}/log/method.log", 'a') do |f|
         f.puts string
       end
     end
