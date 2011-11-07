@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{wherever-positions}
-  s.version = "0.4.5"
+  s.version = "0.4.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Henry"]
-  s.date = %q{2011-11-05}
+  s.date = %q{2011-11-07}
   s.description = %q{Allow Store of positions by multiple keys with teh option to mark specific points in time for use later}
   s.email = %q{dw_henry@yahoo.com.au}
   s.extra_rdoc_files = [
@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
     "features/step_definitions/wherever_steps.rb",
     "features/support/env.rb",
     "features/wherever.feature",
+    "lib/method_logging.rb",
     "lib/monkeypatch_for_mongoid_1.9.rb",
     "lib/string_helper.rb",
     "lib/wherever.rb",
@@ -44,6 +45,7 @@ Gem::Specification.new do |s|
     "lib/wherever/wherever/getter.rb",
     "lib/wherever/wherever/lookup.rb",
     "lib/wherever/wherever/mark.rb",
+    "spec/method_logging_spec.rb",
     "spec/spec_helper.rb",
     "spec/wherever/adder_spec.rb",
     "spec/wherever/custom_grouping_spec.rb",
