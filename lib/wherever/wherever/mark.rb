@@ -11,6 +11,7 @@ class Wherever
       set_price_lookup('price', nil, [{'marker' => name}])
     end
     
+    protected
     def copy_collections(from_collection, to_collection)
       copy_function = "db.#{from_collection}.find().forEach( function(x){db.#{to_collection}.insert(x)} )"
       if Mongoid::Config.respond_to?(:instance)

@@ -20,6 +20,8 @@ class Wherever
           lookup_data.values[value_key] || 0
         end
       end
+      MethodLogging.add_method(self.class, "set_#{name}")
+      MethodLogging.add_method(self.class, "get_#{name}")
     end
   
     protected

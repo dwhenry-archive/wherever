@@ -10,6 +10,8 @@ class Wherever
   include Mark
   attr_reader :config, :marker
   
+  LogMethods = [:add, :get, :get_key_store, :mark]
+  
   def initialize(options={}, &grouping)
     @config = Configure.new(options)
     @marker = options[:marker] || 'current'
@@ -21,6 +23,10 @@ class Wherever
           values[key] += data[key]
         end
       end
+    end
+    
+    if options['method_logging']
+      MethodLogging.add(self.class)
     end
   end
 end

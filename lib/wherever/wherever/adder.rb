@@ -9,6 +9,7 @@ class Wherever
       end
     end
   
+    protected
     def find
       identifier_set.datasets.where(identifier_key).first
     end

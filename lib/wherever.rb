@@ -1,6 +1,7 @@
 require 'mongo'
 require 'mongoid'
 require 'string_helper'
+require 'method_logging'
 require 'wherever/wherever/accessors'
 require 'wherever/wherever/adder'
 require 'wherever/wherever/getter'

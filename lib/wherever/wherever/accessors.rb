@@ -1,5 +1,6 @@
 class Wherever
   module Accessors
+    protected
     def get_key_store(*keys)
       DbStore.new_store(get_marker(keys), keys)
     end
