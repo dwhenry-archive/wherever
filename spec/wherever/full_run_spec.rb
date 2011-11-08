@@ -1,29 +1,30 @@
 require 'spec_helper'
 
 describe Wherever, 'run file test' do
-  let(:wherever) do
-    Wherever.new("keys" => keys, "database" => 'wherever_test',
-                 "key_groups" => key_groups, "key" => "trade_id")  do |values, data, record, keys|
+  let(:wherever) { Wherever.new("keys" => keys, "database" => 'wherever_test',
+               "key_groups" => key_groups, "key" => "trade_id") }
+  let(:keys) { ["fund", "technical_instrument"] }
+  let(:key_groups) { [["fund"], ["fund", "technical_instrument"]] }
+    
+  before do
+    wherever.add_grouping do |values, data, record, keys|
       price = wherever.get_price('current', record)
-      if keys.include?("technical_instrument")
-        values["position"] ||= 0
-        values["position"] += data["position"] if data
-        values["price"] =  price
-      end
+      values["price"] =  price
       if data
+        values["position"] ||= 0
+        values["position"] += data["position"] 
         values["trade_value"] ||= 0
-        values["trade_value"] += data["position"] * price
+        values["trade_value"] += data["position"] * price 
       else
-        debugger unless values["position"]
-        debugger unless price 
         values["trade_value"] = values["position"] * price 
       end
     end
-  end
-  let(:keys) { ["fund", "technical_instrument"] }
-#  let(:key_groups) { [["fund"], ["fund", "technical_instrument"]] }
-  let(:key_groups) { [["fund"]] }
-  before do
+
+    summer = lambda do |records|
+      trade_value = records.sum{|r| r.values['trade_value']}
+      {'values' => {'trade_value' => trade_value } }
+    end
+    wherever.add_summing(['fund'], 'summer' => summer, 'source' => ['fund', 'technical_instrument'])
     wherever.create_lookup('price', ["technical_instrument"])
   end
   

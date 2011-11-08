@@ -7,6 +7,7 @@ class Wherever
   include Adder
   include Getter
   include Lookup
+  include Recalculate
   include Mark
   attr_reader :config, :marker
   
@@ -24,9 +25,17 @@ class Wherever
         end
       end
     end
-    
+    @summing = {}
     if options['method_logging']
       MethodLogging.add(self.class)
     end
+  end
+  
+  def add_grouping(&grouping)
+    @grouping = grouping
+  end
+  
+  def add_summing(key, options)
+    @summing[key] = options
   end
 end

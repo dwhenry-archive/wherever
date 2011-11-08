@@ -37,34 +37,7 @@ class Wherever
       lookup.lookups[get_marker(keys)] = (version || lookup.current)
       lookup.save
     end
-    
-    def recalculate(name)
-      keys = get_lookup(name).keys
-      config.key_groups.each do |group|
-        if keys & group != keys
-          get_key_store(*group).datasets.delete_all
-        end
-      end
-      
-      identifier_set.datasets.all.each do |record|
-        @grouping.call(record.values, nil, record, config.keys)
-        record.save!
-        config.key_groups.each do |group|
-          if keys & group != keys
-            for_group(group, record.values, record, false)
-          end
-        end
-      end
-      config.key_groups.each do |group|
-        if keys & group == keys
-          get_key_store(*group).datasets.all.each do |record|
-            @grouping.call(record.values, nil, record, group)
-            record.save!
-          end
-        end
-      end
-    end
-    
+        
     def get_lookup_record(name, marker)
       lookup = get_lookup(name)
       return [lookup, lookup.versions.find_or_create_by(:name => lookup.lookups[marker])]
