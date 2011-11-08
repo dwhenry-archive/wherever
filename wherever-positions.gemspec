@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{wherever-positions}
-  s.version = "0.5.0"
+  s.version = "0.5.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Henry"]
@@ -45,9 +45,12 @@ Gem::Specification.new do |s|
     "lib/wherever/wherever/getter.rb",
     "lib/wherever/wherever/lookup.rb",
     "lib/wherever/wherever/mark.rb",
+    "lib/wherever/wherever/recalculate.rb",
     "spec/data/test_file_1.script",
     "spec/method_logging_spec.rb",
     "spec/spec_helper.rb",
+    "spec/wherever/add_grouping_spec.rb",
+    "spec/wherever/add_summing_spec.rb",
     "spec/wherever/adder_spec.rb",
     "spec/wherever/custom_grouping_spec.rb",
     "spec/wherever/full_run_spec.rb",
