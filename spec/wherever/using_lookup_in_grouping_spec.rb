@@ -93,7 +93,7 @@ describe Wherever, 'using lookup in grouping calculation' do
       it 'on fund record with two trades' do
         wherever.add({"position" => 200}, options_three)
         wherever.set_price('current', {4 => 12.5})
-        wherever.get_key_store("fund").datasets.all.should ==
+        wherever.get_key_store("fund").datasets.all.to_a.should ==
             [DbStore::Dataset.new("values" => {"trade_value" => 3750}, "fund_id" => 2)] 
       end
     end

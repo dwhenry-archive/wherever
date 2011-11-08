@@ -33,10 +33,10 @@ module MethodLogging
         when "String"
           %Q{"#{arg}"}
         when "Fixnum", "Integer", "Float"
-          arg.to_s
-        when "Hash"
-          string = arg.map do |k, v|
-            "#{strify(k)} => #{strify(v)}"
+          '%.5f' % arg.to_s
+        when "Hash", "BSON::OrderedHash", "HashWithIndifferentAccess"
+          string = arg.keys.sort.map do |k|
+            "#{strify(k)} => #{strify(arg[k])}"
           end.join(', ')
           "{#{string}}"
         when "Array"

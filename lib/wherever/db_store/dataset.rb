@@ -12,6 +12,10 @@ module DbStore
       
       base.field :values, :type => Hash, :default => Hash.new(0)
     end
+    
+    def sorter
+      self.trade_id * 100 + self.version
+    end
   
     def diff(record)
       res = {}

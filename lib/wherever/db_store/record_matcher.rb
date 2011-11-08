@@ -1,7 +1,7 @@
 module DbStore
   module RecordMatcher
     def ==(record)
-      self.clean_attributes == record.clean_attributes
+      MethodLogging.strify(self.clean_attributes) == MethodLogging.strify(record.clean_attributes)
     end
     
     protected

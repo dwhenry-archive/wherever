@@ -51,7 +51,7 @@ class Wherever
         record.save!
         config.key_groups.each do |group|
           if keys & group != keys
-            for_group(group, record.values, record)
+            for_group(group, record.values, record, false)
           end
         end
       end

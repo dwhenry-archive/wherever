@@ -21,14 +21,14 @@ class Wherever
       get_key_store("unique")
     end
     
-    def identifier_key
-      key = version_key
+    def identifier_key(options)
+      key = version_key(options)
       key.delete("version")
       key
     end
     
-    def version_key
-      {}.merge(@options["unique"]).merge(@options["keys"])
+    def version_key(options)
+      {}.merge(options["unique"]).merge(options["keys"])
     end
   end
 end

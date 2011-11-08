@@ -91,7 +91,8 @@ describe "Wherever" do
       it 'add the change' do
         wherever.add({"settled" => 110, "unsettled" => 0}, options_second)
 
-        wherever.get_key_store("unique").datasets.all.should ==
+        data = wherever.get_key_store("unique").datasets.all.to_a.sort_by(&:sorter)
+        data.should ==
             [DbStore::Dataset.new("fund_id" => 2, "trade_id" => 12, "version" => 1, "values" => {"unsettled" => 0, "settled" => 100}),
              DbStore::Dataset.new("fund_id" => 2, "trade_id" => 12, "version" => 2, "values" => {"unsettled" => 0, "settled" => 10})] 
       end
